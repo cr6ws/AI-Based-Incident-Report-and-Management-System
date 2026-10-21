@@ -1,64 +1,285 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AI-Based Incident Report and Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel-based incident management and reporting platform that combines real-time incident intake, role-based access control, AI-assisted severity prediction, and dispatch workflows for emergency response teams.
 
-## About Laravel
+This project is designed to help administrators and responders monitor incidents from multiple sources (mobile reports and CCTV feeds), assign responsibilities, track status, and generate detailed incident reports.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The system provides a central workflow for:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- receiving and organizing incident reports
+- classifying severity with an AI model
+- assigning incidents to responders
+- tracking incident progress and resolution
+- viewing historical incident logs
+- generating printable PDF incident reports
 
-## Learning Laravel
+## Key Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Incident intake and monitoring
+- Supports incident entries from mobile and CCTV sources
+- Stores incidents in Firebase Realtime Database
+- Displays incident data in live management tables and dashboards
+- Tracks current incidents versus resolved cases
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 2. AI-based severity prediction
+- Uses a Python Flask API to predict incident severity based on incident description
+- Loads a trained machine learning model and vectorizer from joblib files
+- Adds severity and priority metadata when a report is created
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 3. Role-based access control
+- Admin users can manage users, review incidents, dispatch responders, and generate reports
+- Responder users can access assigned incident details and historical activity
+- Route protection ensures unauthorized role access is redirected or blocked
 
-## Laravel Sponsors
+### 4. Dispatch and responder workflow
+- Admins can view and dispatch incidents to assigned responders
+- Responders are redirected to their dedicated incident pages
+- Incident assignment logic is handled via dispatch records
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 5. Incident history and logs
+- Keeps a resolved incidents archive
+- Provides incident logs for review of prior cases
+- Supports movement from active incidents to resolved records
 
-### Premium Partners
+### 6. Reporting and documentation
+- Generates single-incident and bulk incident reports
+- Produces downloadable PDF-style reports for operational documentation
+- Helps document incident timeline, description, assignment, and status
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Technology Stack
 
-## Contributing
+- Backend: Laravel 12 (PHP 8.2)
+- Frontend: Blade, Livewire, Tailwind CSS, Vite
+- Authentication: Laravel Jetstream + Sanctum
+- Database: MySQL (Laravel local database) and Firebase Realtime Database
+- AI/ML: Python, Flask, scikit-learn, joblib, pandas
+- Reporting: PDF generation via Laravel controller workflow and browser rendering
+- Notifications: Laravel notifications and email integration
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Project Structure
 
-## Code of Conduct
+```text
+.
+├── app/
+│   ├── Http/Controllers/
+│   ├── Livewire/
+│   ├── Models/
+│   ├── Notifications/
+│   ├── Services/
+│   └── View/
+├── config/
+├── database/
+├── public/
+├── resources/
+│   ├── views/
+│   └── css/
+├── routes/
+├── storage/
+├── tests/
+├── .env.example
+├── composer.json
+├── package.json
+├── requirements.txt
+├── predict_severity_api.py
+├── train_severity_classifier.py
+├── generate_incidents.py
+├── severity_classifier.joblib
+├── severity_vectorizer.joblib
+├── severity_cat_columns.joblib
+├── artisan
+├── vite.config.js
+├── tailwind.config.js
+└── README.md
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Installation
 
-## Security Vulnerabilities
+### Prerequisites
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- PHP 8.2+
+- Composer
+- Node.js and npm
+- MySQL or another supported Laravel database
+- Python 3.x
+- Firebase service account credentials
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/cr6ws/AI-Based-Incident-Report-and-Management-System.git
+cd AI-Based-Incident-Report-and-Management-System
+```
+
+### 2. Install PHP dependencies
+
+```bash
+composer install
+```
+
+### 3. Install frontend dependencies
+
+```bash
+npm install
+```
+
+### 4. Configure environment variables
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Update `.env` with your local configuration:
+
+- database credentials (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`)
+- application URL
+- Firebase configuration values
+
+Example database settings:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=capstone_project
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+The project also expects Firebase configuration, which is referenced in `config/firebase.php`:
+
+```php
+'credentials' => storage_path('app/firebase_credentials.json'),
+'database_url' => env('FIREBASE_DATABASE_URL', 'https://your-database.firebaseio.com'),
+```
+
+Create the Firebase service account file at:
+
+```text
+storage/app/firebase_credentials.json
+```
+
+and add the Firebase Realtime Database URL in `.env`:
+
+```dotenv
+FIREBASE_DATABASE_URL="https://your-project-default-rtdb.firebaseio.com"
+```
+
+### 5. Generate Laravel app key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Run database migrations
+
+```bash
+php artisan migrate
+```
+
+### 7. Start the Python severity prediction API
+
+The AI model is served by Flask and expects to be run from the project root so the model files can be found:
+
+```bash
+python predict_severity_api.py
+```
+
+This starts a Flask service on port `5000` and exposes the `/predict-severity` endpoint.
+
+### 8. Run the Laravel app
+
+In one terminal:
+
+```bash
+php artisan serve
+```
+
+In another terminal:
+
+```bash
+npm run dev
+```
+
+You can also run both together with:
+
+```bash
+composer run dev
+```
+
+## Running the Application
+
+Once the app is running:
+
+- open the web app in your browser
+- create an admin account via the admin creation page
+- log in and access the dashboard
+- manage incidents and responders from the admin interface
+
+### Admin creation route
+
+```text
+/admin-create
+```
+
+### Recovery route
+
+```text
+/admin-recover
+```
+
+## Core Workflows
+
+### Admin workflow
+- Access dashboard summary and overview metrics
+- Review all active incidents
+- View mobile and CCTV incident tables
+- Dispatch incidents to responders
+- Generate incident reports
+- Archive resolved incidents and review logs
+
+### Responder workflow
+- View assigned incidents from the responder panel
+- Open detailed incident information
+- Review incident history and status
+- Update operational awareness of assigned work
+
+## AI Severity Model
+
+The app includes a trained classification pipeline:
+
+- `severity_classifier.joblib`
+- `severity_vectorizer.joblib`
+- `severity_cat_columns.joblib`
+
+The Python API loads these files and predicts a severity label from an incident description. The prediction is sent from Laravel through an HTTP call to:
+
+```text
+http://127.0.0.1:5000/predict-severity
+```
+
+## Extra Scripts
+
+The repository includes utility scripts for model generation and sample data:
+
+- `train_severity_classifier.py` - trains the severity model
+- `generate_incidents.py` - generates sample incidents
+- `admin-control-panel.bat` - Windows helper for launch/admin control tasks
+- `start-vite-dev.bat` - helper to launch Vite in development
+
+## Notes
+
+- The project uses Firebase for operational incident storage while Laravel handles app authentication, dashboard logic, routing, and report generation.
+- The Python service must remain running for AI severity prediction to work properly.
+- `requirements.txt` contains the Python dependencies needed by the prediction service.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is distributed under the MIT license, consistent with the Laravel project template.
 
-UPDATE:
+## Contributing
 
+Contributions are welcome. Please open a pull request or discuss improvements before making large changes.
